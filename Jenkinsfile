@@ -11,7 +11,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "🔧 Compiling jenkins-hello.c..."
+                echo "🔧 Compiling Project"
                 sh 'gcc jenkins-hello.c -o hello.out'
             }
         }
