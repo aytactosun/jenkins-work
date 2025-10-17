@@ -17,11 +17,11 @@ pipeline {
                     def hasCppcheck = sh(script: 'command -v cppcheck >/dev/null 2>&1', returnStatus: true)
 
                     if (hasCppcheck == 0) {
-                        echo "cppcheck found. Running full scan..."
+                        echo " cppcheck found. Running full scan..."
                         sh '''
                             mkdir -p reports
                             # run cppcheck recursively on all source files and generate XML report
-                            sh 'cppcheck --enable=all --inconclusive --suppress=missingIncludeSystem --xml --xml-version=2 .'
+                            cppcheck --enable=all --inconclusive --suppress=missingIncludeSystem --xml --xml-version=2 . 2> reports/cppcheck.xml
                         '''
                         // publish report to Jenkins UI
                         recordIssues(tools: [cppCheck(pattern: 'reports/cppcheck.xml')])
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "Compiling all C files..."
+                echo " Compiling all C files..."
                 sh '''
                     SRC_FILES=$(find . -type f -name "*.c")
                     if [ -n "$SRC_FILES" ]; then
@@ -62,14 +62,14 @@ pipeline {
 
     post {
         always {
-            echo "📊 Archiving analysis reports..."
+            echo " Archiving analysis reports..."
             archiveArtifacts artifacts: 'reports/*.xml', onlyIfSuccessful: false
         }
         success {
-            echo "✅ Build and analysis completed successfully!"
+            echo " Build and analysis completed successfully!"
         }
         failure {
-            echo "❌ Build or analysis failed. Check console and reports for details."
+            echo " Build or analysis failed. Check console and reports for details."
         }
     }
 }
