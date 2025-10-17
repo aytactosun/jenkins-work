@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                echo "🔄 Triggering build process"
                 echo "📦 Checking out repository"
                 checkout scm
             }
