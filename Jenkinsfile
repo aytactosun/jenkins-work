@@ -1,21 +1,25 @@
 pipeline {
     agent any
+
     stages {
-        stage{'Checkout'}{
+        stage('Checkout') {
             steps {
+                echo "📦 Checking out repository"
                 checkout scm
             }
         }
-        stage{'Build'}{
+
+        stage('Build') {
             steps {
-                echo 'Building the project...'
-                sh 'gcc jenkisn-hello.c -o jenkins-hello.out'
+                echo "🔧 Compiling hello.c..."
+                sh 'gcc hello.c -o hello.out'
             }
         }
-        stage{'Run'}{
+
+        stage('Run') {
             steps {
-                echo 'Running the project...'
-                sh './jenkins-hello.out'
+                echo "🚀 Running compiled program..."
+                sh './hello.out'
             }
         }
     }
